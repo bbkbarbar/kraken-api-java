@@ -25,14 +25,16 @@ public class Examples {
         String response;
         Map<String, String> input = new HashMap<>();
 
-        input.put("pair", "XBTEUR");
+        input.put("pair", "XBTUSD");
         response = api.queryPublic(Method.TICKER, input);
         System.out.println("1:\n" + response + "\n");
 
+        /*
         input.clear();
         input.put("pair", "XBTEUR,XBTLTC");
         response = api.queryPublic(Method.ASSET_PAIRS, input);
         System.out.println("2:\n" + response + "\n");
+        /**/
 
         input.clear();
         input.put("asset", "ZEUR");
