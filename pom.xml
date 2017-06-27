@@ -25,4 +25,14 @@
             </plugin>
         </plugins>
     </build>
+    
+    <dependencies>
+        <dependency>
+    	<groupId>hu.barbar.util</groupId>
+    	<artifactId>filehandler</artifactId>
+    	<version>1.0.0</version>
+    </dependency>
+
+
+  </dependencies>
 </project>
