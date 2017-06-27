@@ -1,4 +1,4 @@
-package edu.self.kraken;
+package hu.barbar.kraken;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -8,8 +8,9 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 
-import edu.self.kraken.api.KrakenApi;
-import edu.self.kraken.api.KrakenApi.Method;
+import hu.barbar.kraken.api.KrakenApi;
+import hu.barbar.kraken.api.KrakenApi.Method;
+import hu.barbar.kraken.api.ResponseParser;
 import hu.barbar.util.FileHandler;
 
 public class Examples {
@@ -40,5 +41,13 @@ public class Examples {
         input.put("asset", "ZEUR");
         response = api.queryPrivate(Method.BALANCE, input);
         System.out.println("3:\n" + response + "\n");
+        
+        JSONObject json = new JSONObject();
+        json.escape(response);
+        System.out.println(json);
+       
+        
+        ResponseParser rp = new ResponseParser(Method.BALANCE);
+        rp.getParsed(response);
     }
 }

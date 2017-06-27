@@ -1,4 +1,4 @@
-package edu.self.kraken.api;
+package hu.barbar.kraken.api;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
