@@ -39,14 +39,16 @@ public class Examples {
         /**/
 
         input.clear();
-        input.put("asset", "ZEUR");
+        //input.put("asset", "ZEUR");
         response = api.queryPrivate(Method.BALANCE, input);
         System.out.println("3:\n" + response.get("result") + "\n");
         
+        /*
         input.clear();
         input.put("ofs", "0");
         response = api.queryPrivate(Method.CLOSED_ORDERS, input);
         System.out.println("4:\n" + response.get("result") + "\n");
+        /**/
         
         
     }
