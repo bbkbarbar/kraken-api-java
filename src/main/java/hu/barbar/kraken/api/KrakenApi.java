@@ -6,6 +6,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 /**
  * A KrakenApi instance allows querying the Kraken API.
  *
@@ -32,7 +36,7 @@ public class KrakenApi {
      * @throws IllegalArgumentException if the API method is null
      * @throws IOException if the request could not be created or executed
      */
-    public String queryPublic(Method method, Map<String, String> parameters) throws IOException {
+    public JSONObject queryPublic(Method method, Map<String, String> parameters) throws IOException {
 
         ApiRequest request = new ApiRequest();
         request.setMethod(method);
@@ -40,8 +44,18 @@ public class KrakenApi {
         if (parameters != null) {
             request.setParameters(parameters);
         }
-
-        return request.execute();
+        
+        String response = request.execute();
+        
+        JSONParser parser = new JSONParser();
+        
+        try {
+			JSONObject json = (JSONObject) parser.parse(response);
+			return json;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
     }
 
     /**
@@ -51,7 +65,7 @@ public class KrakenApi {
      * @return the API response
      * @throws IOException if the request could not be created or executed
      */
-    public String queryPublic(Method method) throws IOException {
+    public JSONObject queryPublic(Method method) throws IOException {
         return queryPublic(method, null);
     }
 
@@ -67,7 +81,7 @@ public class KrakenApi {
      *         could not be found
      * @throws InvalidKeyException if the HMAC key is invalid
      */
-    public String queryPrivate(Method method, String otp, Map<String, String> parameters) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
+    public JSONObject queryPrivate(Method method, String otp, Map<String, String> parameters) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
 
         ApiRequest request = new ApiRequest();
         request.setKey(key);
@@ -103,27 +117,34 @@ public class KrakenApi {
         String hmacDigest = KrakenUtils.base64Encode(KrakenUtils.hmacSha512(hmacKey, hmacMessage));
         request.setSignature(hmacDigest);
 
-        return request.execute();
+        String response = request.execute();
+        try {
+			JSONObject json = (JSONObject) new JSONParser().parse(response);
+			return json;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
     }
 
     /**
      * @see #queryPrivate(Method, String, Map)
      */
-    public String queryPrivate(Method method) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+    public JSONObject queryPrivate(Method method) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return queryPrivate(method, null, null);
     }
 
     /**
      * @see #queryPrivate(Method, String, Map)
      */
-    public String queryPrivate(Method method, String otp) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+    public JSONObject queryPrivate(Method method, String otp) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return queryPrivate(method, otp, null);
     }
 
     /**
      * @see #queryPrivate(Method, String, Map)
      */
-    public String queryPrivate(Method method, Map<String, String> parameters) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+    public JSONObject queryPrivate(Method method, Map<String, String> parameters) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return queryPrivate(method, null, parameters);
     }
 

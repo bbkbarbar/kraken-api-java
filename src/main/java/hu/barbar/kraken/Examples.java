@@ -7,10 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import hu.barbar.kraken.api.KrakenApi;
 import hu.barbar.kraken.api.KrakenApi.Method;
-import hu.barbar.kraken.api.ResponseParser;
 import hu.barbar.util.FileHandler;
 
 public class Examples {
@@ -23,7 +24,7 @@ public class Examples {
         api.setKey((String) myApiKey.get("api key")); // FIXME
         api.setSecret((String) myApiKey.get("api secret")); // FIXME
 
-        String response;
+        JSONObject response;
         Map<String, String> input = new HashMap<>();
 
         input.put("pair", "XBTUSD");
@@ -40,14 +41,13 @@ public class Examples {
         input.clear();
         input.put("asset", "ZEUR");
         response = api.queryPrivate(Method.BALANCE, input);
-        System.out.println("3:\n" + response + "\n");
+        System.out.println("3:\n" + response.get("result") + "\n");
         
-        JSONObject json = new JSONObject();
-        json.escape(response);
-        System.out.println(json);
-       
+        input.clear();
+        input.put("ofs", "0");
+        response = api.queryPrivate(Method.CLOSED_ORDERS, input);
+        System.out.println("4:\n" + response.get("result") + "\n");
         
-        ResponseParser rp = new ResponseParser(Method.BALANCE);
-        rp.getParsed(response);
+        
     }
 }
