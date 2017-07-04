@@ -30,6 +30,12 @@ public class Examples {
         input.put("pair", "XBTUSD");
         response = api.queryPublic(Method.TICKER, input);
         System.out.println("1:\n" + response + "\n");
+        
+        input.put("pair", "EOSUSD");
+        response = api.queryPublic(Method.TICKER, input);
+        System.out.println("2:\n" + response.get("p") + "\n");
+        JSONObject res = (JSONObject) response.get("result");
+        System.out.println("2:\n" + res.get("p") + "\n");
 
         /*
         input.clear();
